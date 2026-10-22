@@ -1,0 +1,94 @@
+/* Menu Stack Bar */
+.menu-stack-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.75rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px -5px rgba(60, 40, 20, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  margin-bottom: 2rem;
+  font-family: inherit;
+}
+
+.menu-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  user-select: none;
+}
+
+.brand-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.brand-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #2b1f17;
+  letter-spacing: -0.02em;
+}
+
+/* Links */
+.menu-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.menu-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #5c4d42;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-link:hover {
+  background: #fbf6f0;
+  color: #a05a2c;
+  transform: translateY(-1px);
+}
+
+.menu-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Active menu item CSS styling */
+.menu-link.active {
+  background: #a05a2c;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(160, 90, 44, 0.28);
+}
+
+.menu-link.active:hover {
+  background: #8b4a20;
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .menu-stack-bar {
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1rem;
+  }
+
+  .menu-links {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .menu-link {
+    flex: 1;
+    justify-content: center;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}

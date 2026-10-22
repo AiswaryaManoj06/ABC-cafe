@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomerOrder } from '../../models/customer-order.model';
+import { OrderService } from '../../services/order.service';
 
 @Component({
   selector: 'app-order-placement',
@@ -22,10 +23,12 @@ export class OrderPlacementComponent {
   /** Emits the created order upon successful placement */
   @Output() orderPlaced = new EventEmitter<CustomerOrder>();
 
+  constructor(private orderService: OrderService) {}
+
   /**
    * Implements the "Place Order" functionality:
-   * Adds the selected beverage to the order summary array
-   * and notifies parent component.
+   * Adds the selected beverage to the order summary array,
+   * records it in the shared OrderService, and notifies parent.
    */
   placeOrder(): void {
     if (this.customerName && this.customerName.trim() && this.selectedBeverage) {
@@ -36,8 +39,11 @@ export class OrderPlacementComponent {
         beverage: this.selectedBeverage
       };
 
-      // Add selected beverage to the order summary
-      if (this.customerOrders) {
+      // Add to shared OrderService
+      this.orderService.addOrder(newOrder);
+
+      // Add selected beverage to the order summary array if provided
+      if (this.customerOrders && !this.customerOrders.includes(newOrder)) {
         this.customerOrders.push(newOrder);
       }
 

@@ -1,0 +1,54 @@
+<div class="order-list-page animate-fade-in">
+  <!-- Customer Review Modal/Card (Shown on clicking Consumed button) -->
+  <app-customer-review
+    *ngIf="showCustomerReview"
+    [order]="activeOrderDescription"
+    [(isVisible)]="showCustomerReview"
+    (reviewSubmitted)="onReviewSubmitted($event)"
+  />
+
+  <!-- Orders Header -->
+  <div class="list-header">
+    <div>
+      <span class="list-badge">📋 Order History</span>
+      <h2 class="list-heading">Customer Orders</h2>
+      <p class="list-subtitle">Manage customer beverage orders and log consumer reviews.</p>
+    </div>
+    <span class="orders-count-pill">{{ customerOrders.length }} {{ customerOrders.length === 1 ? 'order' : 'orders' }}</span>
+  </div>
+
+  <!-- Empty State when no orders placed -->
+  <div *ngIf="customerOrders.length === 0" class="empty-state-card animate-fade-in">
+    <div class="empty-icon">☕</div>
+    <h3 class="empty-title">No Orders Placed Yet</h3>
+    <p class="empty-desc">Head over to the Counter to take delicious customer orders!</p>
+    <a routerLink="/home" class="btn-primary-link">Go to Order Counter &rarr;</a>
+  </div>
+
+  <!-- Orders List (Displayed when customerOrders.length > 0) -->
+  <div *ngIf="customerOrders.length > 0" class="card-section orders-container animate-fade-in">
+    <ul class="orders-list">
+      <li *ngFor="let order of customerOrders; let i = index" class="order-item">
+        <span class="order-badge">#{{ i + 1 }}</span>
+        <div class="order-info">
+          {{ i + 1 }}. <span class="order-customer">{{ order.customerName || order.name }}</span> ordered <span class="order-drink">{{ order.beverage | uppercase }}</span>.
+        </div>
+
+        <!-- Consumed button: visible until review is submitted -->
+        <button
+          *ngIf="!order.consumed"
+          type="button"
+          class="btn-consumed"
+          (click)="onConsumed(order, i)"
+        >
+          Consumed
+        </button>
+
+        <!-- Reviewed indicator badge after submission -->
+        <span *ngIf="order.consumed" class="badge-reviewed">
+          ✅ Reviewed
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

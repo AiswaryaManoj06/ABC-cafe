@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { AbcCafeComponent } from './abc-cafe/abc-cafe.component';
+import { RouterOutlet } from '@angular/router';
+import { MenuStackBarComponent } from './menu-stack-bar/menu-stack-bar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AbcCafeComponent],
+  imports: [RouterOutlet, MenuStackBarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'cafe';
+  title = 'ABC Cafe';
 }

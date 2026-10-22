@@ -1,7 +1,26 @@
-main {
+.app-layout {
   min-height: 100vh;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
+  flex-direction: column;
+}
+
+.main-content-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 20px 40px -15px rgba(60, 40, 20, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 520px) {
+  .app-layout {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .main-content-card {
+    padding: 1.5rem 1.25rem;
+  }
 }

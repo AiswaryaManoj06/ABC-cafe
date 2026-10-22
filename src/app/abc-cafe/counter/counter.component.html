@@ -28,3 +28,32 @@
     </button>
   </div>
 </div>
+
+<!-- Order Placed Success Alert (for routed usage) -->
+<div *ngIf="orderPlacedSuccess" class="alert-success animate-fade-in">
+  <div class="alert-icon">🎉</div>
+  <div class="alert-content">
+    <strong>Order Placed Successfully!</strong>
+    <p *ngIf="lastPlacedOrder">
+      Order for <em>{{ lastPlacedOrder.customerName }}</em> ({{ lastPlacedOrder.beverage }}) has been logged.
+    </p>
+    <a routerLink="/order-list" class="alert-link">View in Order List &rarr;</a>
+  </div>
+</div>
+
+<!-- Routed Order Flow (when CounterComponent is accessed via /home route) -->
+<ng-container *ngIf="orderInquiryActive">
+  <app-order-inquiry [customerName]="customerName" />
+  <app-beverage-selection
+    *ngIf="orderInquiryActive"
+    [beverages]="beverages"
+    [(selectedBeverage)]="selectedBeverage"
+    (beverageSelected)="onBeverageSelect($event)"
+  />
+  <app-order-placement
+    *ngIf="orderInquiryActive"
+    [customerName]="customerName"
+    [selectedBeverage]="selectedBeverage"
+    (orderPlaced)="onOrderPlaced($event)"
+  />
+</ng-container>

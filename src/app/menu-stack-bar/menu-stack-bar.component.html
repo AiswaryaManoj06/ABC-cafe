@@ -1,0 +1,40 @@
+<!-- Menu Stack Bar Navigation -->
+<nav class="menu-stack-bar">
+  <div class="menu-brand">
+    <span class="brand-icon">☕</span>
+    <span class="brand-name">ABC Cafe</span>
+  </div>
+
+  <div class="menu-links">
+    <!-- Home / Counter Link -->
+    <a
+      routerLink="/home"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: false }"
+      class="menu-link"
+    >
+      <span class="menu-icon">🏠</span>
+      <span class="menu-text">Home</span>
+    </a>
+
+    <!-- Order List Link -->
+    <a
+      routerLink="/order-list"
+      routerLinkActive="active"
+      class="menu-link"
+    >
+      <span class="menu-icon">📋</span>
+      <span class="menu-text">Order List</span>
+    </a>
+
+    <!-- Performance Link -->
+    <a
+      routerLink="/performance"
+      routerLinkActive="active"
+      class="menu-link"
+    >
+      <span class="menu-icon">📊</span>
+      <span class="menu-text">Performance</span>
+    </a>
+  </div>
+</nav>

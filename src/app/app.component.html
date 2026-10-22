@@ -1,3 +1,9 @@
-<main>
-  <app-abc-cafe />
+<main class="app-layout">
+  <!-- Menu Stack Bar integrated at the top of the application -->
+  <app-menu-stack-bar />
+
+  <!-- Routed Component Views: Home (Counter), Order List, Performance -->
+  <div class="main-content-card">
+    <router-outlet />
+  </div>
 </main>
