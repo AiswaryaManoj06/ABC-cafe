@@ -1,123 +1,204 @@
-# ABC Cafe - Angular Ordering System
+# ABC Cafe - Angular Ordering & Performance System
 
-A responsive, accessible, and interactive cafe ordering system built with **Angular (Standalone Architecture)**, simulating a dynamic beverage order-taking workflow.
+A modern, responsive, and accessible cafe management application built with **Angular (Standalone Architecture)** featuring modular components, dynamic pipes, customer feedback tracking, performance analytics, and stack bar routing navigation.
 
 ---
 
 ## 📌 Project Overview
-ABC Cafe allows counter staff or customers to enter their name, choose from a selection of beverages (Coffee, Tea, Juice, Soda), place an order, and dynamically view an accumulated order summary list formatted with serial numbers.
+
+ABC Cafe simulates a full-cycle beverage ordering counter and customer satisfaction system:
+1. **Counter Order Taking:** Counter staff enter customer names and take beverage orders (Coffee, Tea, Juice, Soda).
+2. **Dynamic Order Summaries:** Live order listing formatted with serial numbers, customer names, and beverage choices formatted with Angular pipes.
+3. **Customer Feedback:** Customers review their drinks as **Good**, **Average**, or **Poor** via an interactive review component upon consumption.
+4. **Performance Analytics:** Real-time analytics engine calculating review statistics and evaluating overall cafe service performance.
+5. **Menu Stack Bar Routing:** Navigation bar powered by Angular's Router to switch between the **Home (Counter)**, **Order List**, and **Performance** views.
 
 ---
 
-## 📖 Code Explanation & Implementation Details
+## 🏗️ Architecture & Component Hierarchy
 
-### 1. Component State & Data Flow (`abc-cafe.component.ts`)
-- **`customerName` (string):** Tracks the customer's name input using two-way data binding (`[(ngModel)]`).
-- **`orderInquiryActive` (boolean):** A state flag that remains `false` until the user enters a valid customer name and clicks the **"Ask Order"** button, triggering the beverage selection UI.
-- **`selectedBeverage` (string):** Holds the currently selected radio button value from the beverage menu.
-- **`beverages` (string array):** Contains the available beverage choices (`['Coffee', 'Tea', 'Juice', 'Soda']`), acting as the single source of truth for menu items.
-- **`customerOrders` (array):** Stores order objects containing `{ customerName, name, beverage }`.
-- **`askOrder()`:** Validates that the input is non-empty (`this.customerName.trim()`) and toggles `orderInquiryActive = true`.
-- **`placeOrder()`:** Validates both the customer name and selected beverage, creates an order entry, appends it to `customerOrders`, and resets the form state for the next customer.
+The application has been modularized into distinct, single-responsibility components and shared singleton services:
+
+```
+src/
+├── app/
+│   ├── app-routing.module.ts              # Dedicated routing module configuration
+│   ├── app.config.ts                      # Zoneless change detection & router providers
+│   ├── app.component.ts                   # Main application shell with MenuStackBar & RouterOutlet
+│   ├── app.component.html                 # Top layout with <app-menu-stack-bar> & <router-outlet>
+│   ├── app.component.css                  # Centered layout frame styling
+│   │
+│   ├── menu-stack-bar/                    # Top navigation stack bar
+│   │   ├── menu-stack-bar.component.ts    # RouterLink & RouterLinkActive integration
+│   │   ├── menu-stack-bar.component.html  # Links for Home, Order List, and Performance
+│   │   └── menu-stack-bar.component.css   # Active item highlight and responsive styling
+│   │
+│   ├── services/
+│   │   ├── order.service.ts               # Shared service preserving orders across routes
+│   │   └── feedback.service.ts            # Shared review logging & performance calculation
+│   │
+│   ├── models/
+│   │   └── customer-order.model.ts        # Typed interface for CustomerOrder
+│   │
+│   └── abc-cafe/
+│       ├── counter/                       # Counter Component (Heading, DatePipe, Name Input)
+│       ├── order-inquiry/                 # Order Inquiry Component (Dynamic [customerName])
+│       ├── beverage-selection/            # Beverage Selection Component (*ngFor & radio choices)
+│       ├── order-placement/               # Order Placement Component ("Place Order" action)
+│       ├── order-summary/                 # Order Summary Component (UpperCasePipe & Consumed button)
+│       ├── order-list/                    # Routed Order List View with Consumed reviews
+│       ├── customer-review/               # Review Component (Good / Average / Poor buttons)
+│       ├── performance/                   # Performance Component (Analytics & Status counts)
+│       ├── abc-cafe.component.ts          # Main orchestrator component
+│       ├── abc-cafe.component.html        # Composite template
+│       └── abc-cafe.component.css         # Scoped styling
+│
+├── index.html
+├── main.ts
+└── styles.css
+```
 
 ---
 
-## 🛠️ Appropriate Use of `*ngIf` and `*ngFor` Directives
+## 📖 Component Breakdown
 
-### `*ngIf` (Conditional DOM Rendering)
-1. **Dynamic Order Inquiry:**
-   ```html
-   <div *ngIf="orderInquiryActive" class="card-section order-inquiry animate-fade-in">
-   ```
-   The beverage selection card is conditionally mounted to the DOM only after the user enters their name and triggers the inquiry process.
-2. **Order Summary Rendering:**
-   ```html
-   <div *ngIf="customerOrders.length > 0" class="card-section order-summary animate-fade-in">
-   ```
-   The order summary container remains unmounted until at least one order has been placed (`customerOrders.length > 0`), maintaining a clean, uncluttered interface.
+### 1. Counter Component (`CounterComponent`)
+- **Selector:** `app-counter`
+- **Heading & Date:** Displays the counter heading alongside the current date formatted using Angular's **`DatePipe`** (`{{ currentDate | date:'fullDate' }}`).
+- **Customer Name Input:** Two-way bound name entry (`[(ngModel)]="customerName"`).
+- **"Ask Order" Action:** Validates non-empty input and triggers the inquiry workflow.
+- **Dual Mode:** Functions as both an embedded child component and a standalone route component for `/home`.
 
-### `*ngFor` (Dynamic List Iteration)
-1. **Beverage Menu Options:**
-   ```html
-   <label *ngFor="let bev of beverages" class="beverage-card" [class.selected]="selectedBeverage === bev">
-     <input type="radio" name="beverage" [value]="bev" [(ngModel)]="selectedBeverage" />
-     <span class="bev-name">{{ bev }}</span>
-   </label>
-   ```
-   Iterates through the `beverages` array dynamically. New beverages can be added to the TypeScript array without modifying the HTML template.
-2. **Order Summary History with Serial Numbers:**
-   ```html
-   <li *ngFor="let order of customerOrders; let i = index" class="order-item">
-     <span class="order-badge">#{{ i + 1 }}</span>
-     <div class="order-info">
-       {{ i + 1 }}. <span class="order-customer">{{ order.customerName }}</span> ordered <span class="order-drink">{{ order.beverage }}</span>
-     </div>
-   </li>
-   ```
-   Iterates over the accumulated orders, utilizing Angular's `let i = index` to render serial numbers formatted cleanly as `[sl.no] [customerName] ordered [beverage]`.
+### 2. Order Inquiry Component (`OrderInquiryComponent`)
+- **Selector:** `app-order-inquiry`
+- **Dynamic Prompt:** Interpolates and highlights the customer's name dynamically:
+  ```html
+  <p class="inquiry-prompt">
+    What would <span class="highlight-name">{{ customerName }}</span> like to have?
+  </p>
+  ```
+
+### 3. Beverage Selection Component (`BeverageSelectionComponent`)
+- **Selector:** `app-beverage-selection`
+- **Conditional Rendering:** Displayed conditionally via `*ngIf="orderInquiryActive"`.
+- **Dynamic Options Grid:** Uses `*ngFor="let bev of beverages"` to render the beverage menu choices (`Coffee`, `Tea`, `Juice`, `Soda`).
+- **Selection State:** Emits beverage selection changes back to the parent container.
+
+### 4. Order Placement Component (`OrderPlacementComponent`)
+- **Selector:** `app-order-placement`
+- **Action:** Houses the **"Place Order"** button.
+- **Order Dispatch:** Pushes the new order object into `OrderService` and `customerOrders`, resetting the inquiry state for subsequent customers.
+
+### 5. Order Summary Component (`OrderSummaryComponent`)
+- **Selector:** `app-order-summary`
+- **Conditional Display:** Mounted only when orders exist (`*ngIf="customerOrders.length > 0"`).
+- **Pipe Formatting:** Transforms drink names to uppercase using Angular's **`UpperCasePipe`**:
+  `[sl.no]. [customerName] ordered [formattedBeverage].`
+  ```html
+  {{ i + 1 }}. {{ order.customerName }} ordered {{ order.beverage | uppercase }}.
+  ```
+- **"Consumed" Action:** Displays a **"Consumed"** button next to each active order item.
+
+---
+
+## ⭐ Feedback System & Performance Analytics
+
+### 1. Shared `FeedbackService`
+Injected as a singleton service across the application providing:
+- **`logFeedback(order: string, feedback: string)`**: Records a customer's review with timestamp and order context.
+- **`getFeedbackData()`**: Returns the full list of logged reviews.
+- **`getReviewStats()`**: Computes the distribution of **Good**, **Average**, and **Poor** ratings.
+- **`getPerformanceMessage()`**: Determines service quality status based on feedback ratios (`Excellent`, `Good`, `Needs improvement`).
+
+### 2. Customer Review Component (`CustomerReviewComponent`)
+- **Selector:** `app-customer-review`
+- **Review Buttons:** Quick-rating buttons for **Good** (😊), **Average** (😐), and **Poor** (😞).
+- **Workflow:**
+  1. User clicks **"Consumed"** next to an order in the order list.
+  2. `CustomerReviewComponent` opens for that specific order.
+  3. Clicking a rating logs feedback to `FeedbackService`.
+  4. The review card hides automatically, and the order's **"Consumed"** button is replaced by a `✅ Reviewed` badge.
+
+### 3. Performance Component (`PerformanceComponent`)
+- **Selector:** `app-performance`
+- **Performance Evaluation:** Displays the overall rating message (`Excellent`, `Good`, or `Needs improvement`) retrieved from `FeedbackService`.
+- **Status Counts Toggle:** Includes a button (**"Show Review Counts"** / **"Hide Review Counts"**) that displays live counts of **Good**, **Average**, **Poor**, and **Total Reviews**.
+
+---
+
+## 🧭 Menu Stack Bar & Angular Routing
+
+### 1. Routing Module (`AppRoutingModule`)
+Configured in `app-routing.module.ts`:
+```typescript
+export const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: CounterComponent },
+  { path: 'counter', component: CounterComponent },
+  { path: 'order-list', component: OrderListComponent },
+  { path: 'orders', component: OrderListComponent },
+  { path: 'performance', component: PerformanceComponent },
+  { path: '**', redirectTo: 'home' }
+];
+```
+
+### 2. Menu Stack Bar (`MenuStackBarComponent`)
+- Embedded at the top of `app.component.html`.
+- Uses Angular's **`RouterLink`** directive for instant client-side transitions.
+- Employs **`routerLinkActive="active"`** to highlight the current navigation item with custom styles (`.active`).
+
+---
+
+## 🛠️ Directives & Pipes Summary
+
+| Feature | Angular Utility | Purpose in ABC Cafe |
+| :--- | :--- | :--- |
+| **Current Date** | `DatePipe` | Formats current counter date: `{{ currentDate \| date:'fullDate' }}` |
+| **Drink Formatting** | `UpperCasePipe` | Formats beverage names in order summary: `{{ order.beverage \| uppercase }}` |
+| **Inquiry Display** | `*ngIf` | Conditionally mounts beverage selection only after name is entered |
+| **Summary Display** | `*ngIf` | Displays order list only when `customerOrders.length > 0` |
+| **Review Card** | `*ngIf` | Displays feedback dialog only when an order is marked consumed |
+| **Menu Iteration** | `*ngFor` | Generates beverage choices dynamically from array |
+| **Orders Iteration** | `*ngFor` | Iterates over placed orders and renders numbered badges (`let i = index`) |
+| **Route Links** | `routerLink` | Client-side navigation between Home, Order List, and Performance |
+| **Active Highlight** | `routerLinkActive` | Dynamically applies `.active` CSS class to the active menu link |
 
 ---
 
 ## ⚡ Challenges Faced & Solutions
 
-| Challenge | Cause / Context | Solution Implemented |
+| Challenge | Context | Solution |
 | :--- | :--- | :--- |
-| **Zone.js Dependency Error (`NG0908`)** | Modern Angular 19+ standalone setups no longer bundle `zone.js` by default, but standard starters might try calling `provideZoneChangeDetection()`. | Replaced the legacy provider in `app.config.ts` with `provideZonelessChangeDetection()`, allowing Angular to operate natively in high-performance zoneless mode. |
-| **Preventing Empty / Whitespace Orders** | Users could accidentally click "Ask Order" with empty or space-only input. | Added trimming validation `[disabled]="!customerName.trim()"` to disable the button and checked `.trim()` in `askOrder()` and `placeOrder()`. |
-| **Radio Grouping Across Iterations** | Dynamic radio inputs created with `*ngFor` need unified grouping. | Unified the inputs under a shared `name="beverage"` attribute and bound `[(ngModel)]="selectedBeverage"` with `[value]="bev"`. |
-| **Port Conflict during Local Serve** | Development port `4200` was occupied by an existing local process. | Implemented flexible port forwarding using `npm start -- --port 4201` to enable simultaneous local execution without interrupting other projects. |
-
----
-
-## 🎯 Clean Code & Angular Best Practices
-
-- **Standalone Components:** Used Angular's modern standalone architecture (`standalone: true`) without requiring NgModule ceremony.
-- **Explicit Imports:** Each component explicitly imports only the modules it requires (`CommonModule`, `FormsModule`).
-- **Strong Typing:** Defined a clear `CustomerOrder` interface for typed state management.
-- **Scoped Styles:** Kept styling modular and encapsulated inside `abc-cafe.component.css`, avoiding global style pollution.
-- **User Experience (UX):** Added smooth CSS micro-interactions, responsive grid layouts, and keyboard accessibility (`Enter` key triggers order inquiry).
+| **State Persistence Across Routes** | Navigating between `/home` and `/order-list` in Angular creates new component instances, which would discard in-memory arrays. | Created a shared singleton `OrderService` (`providedIn: 'root'`) so orders placed at the Counter persist into the Order List across navigation. |
+| **Consumed Button Visibility** | The requirement specifies that once a review is submitted, the "Consumed" button must no longer be visible. | Added `consumed?: boolean` to `CustomerOrder`. When review is submitted, `order.consumed = true` removes the button via `*ngIf="!order.consumed"` and shows `✅ Reviewed`. |
+| **Zoneless Setup (`NG0908`)** | Standalone starter without Zone.js. | Configured `provideZonelessChangeDetection()` in `app.config.ts` for native zoneless rendering. |
+| **Module & Standalone Compatibility** | Project required `app-routing.module.ts` while running standalone `bootstrapApplication`. | Exported `routes` and `AppRoutingModule` simultaneously, configuring both `provideRouter(routes)` and `importProvidersFrom(AppRoutingModule)` in `app.config.ts`. |
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. Installation
-Clone the repository and install dependencies:
+### 1. Clone & Install Dependencies
 ```bash
 git clone https://github.com/AiswaryaManoj06/ABC-cafe.git
 cd ABC-cafe
 npm install
 ```
 
-### 2. Development Server
-Run the local dev server:
+### 2. Run Development Server
 ```bash
 npm start
 ```
-Navigate to `http://localhost:4200/` (or `http://localhost:4201/`).
+Open your browser and navigate to:
+👉 **`http://localhost:4200/`** (or **`http://localhost:4201/`**)
 
-### 3. Build for Production
-To generate an optimized production build:
+### 3. Production Build
 ```bash
 npm run build
 ```
-Output files will be saved in `dist/cafe/`.
+Bundle artifacts will be compiled into `dist/cafe/`.
 
 ---
 
-## 📂 Project Structure
-```
-src/
-├── app/
-│   ├── app.component.ts         # Root component mounting ABC Cafe
-│   ├── app.component.html       # Contains <app-abc-cafe />
-│   ├── app.component.css        # Root layout styles
-│   ├── app.config.ts            # Zoneless application configuration
-│   └── abc-cafe/
-│       ├── abc-cafe.component.ts   # Ordering logic and component state
-│       ├── abc-cafe.component.html # Interactive order counter UI
-│       └── abc-cafe.component.css  # Scoped component styling
-├── index.html
-├── main.ts
-└── styles.css
-```
+## 🔗 Live Repository
+- **GitHub:** [https://github.com/AiswaryaManoj06/ABC-cafe](https://github.com/AiswaryaManoj06/ABC-cafe)
