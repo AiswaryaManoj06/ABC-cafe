@@ -1,53 +1,86 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CustomerOrder } from '../models/customer-order.model';
+import { CounterComponent } from './counter/counter.component';
+import { OrderInquiryComponent } from './order-inquiry/order-inquiry.component';
+import { BeverageSelectionComponent } from './beverage-selection/beverage-selection.component';
+import { OrderPlacementComponent } from './order-placement/order-placement.component';
+import { OrderSummaryComponent } from './order-summary/order-summary.component';
 
-export interface CustomerOrder {
-  customerName: string;
-  name: string;
-  beverage: string;
-}
+export type { CustomerOrder } from '../models/customer-order.model';
 
 @Component({
   selector: 'app-abc-cafe',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CounterComponent,
+    OrderInquiryComponent,
+    BeverageSelectionComponent,
+    OrderPlacementComponent,
+    OrderSummaryComponent
+  ],
   templateUrl: './abc-cafe.component.html',
   styleUrls: ['./abc-cafe.component.css']
 })
 export class AbcCafeComponent {
-  /** Customer's name entered in the input field */
+  /** Customer's name entered in the counter */
   customerName = '';
 
-  /** Flag indicating the order inquiry is active */
+  /** Flag indicating whether the order inquiry process is active */
   orderInquiryActive = false;
 
   /** Currently selected beverage */
   selectedBeverage = '';
 
-  /** List of beverage options */
-  beverages = ['Coffee', 'Tea', 'Juice', 'Soda'];
+  /** List of available beverage options */
+  beverages: string[] = ['Coffee', 'Tea', 'Juice', 'Soda'];
 
-  /** Accumulated orders */
+  /** Accumulated customer orders */
   customerOrders: CustomerOrder[] = [];
 
-  /** Triggered when the "Ask Order" button is pressed */
-  askOrder() {
+  /**
+   * Activates the order inquiry process after a customer name is entered.
+   */
+  askOrder(name?: string): void {
+    if (name) {
+      this.customerName = name;
+    }
     if (this.customerName.trim()) {
-      // Show the beverage list only after customer name is entered
       this.orderInquiryActive = true;
     }
   }
 
-  /** Adds the selected beverage to the order summary */
-  placeOrder() {
+  /**
+   * Handles beverage selection from BeverageSelectionComponent
+   */
+  onBeverageSelect(beverage: string): void {
+    this.selectedBeverage = beverage;
+  }
+
+  /**
+   * Resets form and inquiry state after an order has been placed.
+   */
+  onOrderPlaced(order: CustomerOrder): void {
+    // Reset state for next customer
+    this.customerName = '';
+    this.selectedBeverage = '';
+    this.orderInquiryActive = false;
+  }
+
+  /**
+   * Fallback method to place order directly if needed
+   */
+  placeOrder(): void {
     if (this.customerName.trim() && this.selectedBeverage) {
+      const trimmedName = this.customerName.trim();
       this.customerOrders.push({
-        customerName: this.customerName.trim(),
-        name: this.customerName.trim(),
-        beverage: this.selectedBeverage,
+        customerName: trimmedName,
+        name: trimmedName,
+        beverage: this.selectedBeverage
       });
-      // Reset UI for the next order
       this.customerName = '';
       this.selectedBeverage = '';
       this.orderInquiryActive = false;

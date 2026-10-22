@@ -1,0 +1,89 @@
+.card-section {
+  background: #fdfcfb;
+  border: 1px solid #efe8e1;
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.section-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #423228;
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.beverage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.beverage-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: #ffffff;
+  border: 1.5px solid #e8dfd6;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.beverage-card input[type="radio"] {
+  display: none;
+}
+
+.bev-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.bev-name {
+  font-weight: 600;
+  color: #3a2d24;
+  font-size: 0.95rem;
+}
+
+.beverage-card:hover {
+  border-color: #a05a2c;
+  background: #fdf9f6;
+  transform: translateY(-2px);
+}
+
+.beverage-card.selected {
+  border-color: #a05a2c;
+  background: #f7ebe1;
+  box-shadow: 0 0 0 2px #a05a2c;
+}
+
+.beverage-card.selected .bev-name {
+  color: #723b16;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (max-width: 520px) {
+  .beverage-grid {
+    grid-template-columns: 1fr;
+  }
+}

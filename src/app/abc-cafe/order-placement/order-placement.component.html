@@ -1,0 +1,10 @@
+<div class="order-placement-actions animate-fade-in">
+  <button
+    type="button"
+    class="btn-order"
+    (click)="placeOrder()"
+    [disabled]="!selectedBeverage || !customerName.trim()"
+  >
+    Place Order
+  </button>
+</div>

@@ -1,0 +1,29 @@
+<div class="card-section beverage-selection animate-fade-in">
+  <label class="section-label">Select Your Beverage</label>
+  <div class="beverage-grid">
+    <label
+      *ngFor="let bev of beverages"
+      class="beverage-card"
+      [class.selected]="selectedBeverage === bev"
+      (click)="onSelectBeverage(bev)"
+    >
+      <input
+        type="radio"
+        name="beverageOption"
+        [value]="bev"
+        [checked]="selectedBeverage === bev"
+        (change)="onSelectBeverage(bev)"
+      />
+      <span class="bev-icon">
+        <ng-container [ngSwitch]="bev">
+          <span *ngSwitchCase="'Coffee'">☕</span>
+          <span *ngSwitchCase="'Tea'">🍵</span>
+          <span *ngSwitchCase="'Juice'">🧃</span>
+          <span *ngSwitchCase="'Soda'">🥤</span>
+          <span *ngSwitchDefault>🍹</span>
+        </ng-container>
+      </span>
+      <span class="bev-name">{{ bev }}</span>
+    </label>
+  </div>
+</div>

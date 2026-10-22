@@ -1,0 +1,15 @@
+<!-- Order Summary Displayed only if customerOrders has items -->
+<div *ngIf="customerOrders && customerOrders.length > 0" class="card-section order-summary animate-fade-in">
+  <div class="summary-header">
+    <h3 class="summary-title">📋 Order Summary</h3>
+    <span class="orders-count">{{ customerOrders.length }} {{ customerOrders.length === 1 ? 'order' : 'orders' }}</span>
+  </div>
+  <ul class="orders-list">
+    <li *ngFor="let order of customerOrders; let i = index" class="order-item">
+      <span class="order-badge">#{{ i + 1 }}</span>
+      <div class="order-info">
+        {{ i + 1 }}. <span class="order-customer">{{ order.customerName || order.name }}</span> ordered <span class="order-drink">{{ order.beverage | uppercase }}</span>.
+      </div>
+    </li>
+  </ul>
+</div>

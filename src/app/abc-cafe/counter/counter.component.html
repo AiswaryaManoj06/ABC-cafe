@@ -1,0 +1,30 @@
+<!-- Counter Header Banner -->
+<div class="cafe-header">
+  <div class="cafe-badge">☕ Freshly Brewed Daily</div>
+  <h2 class="cafe-heading">ABC Cafe Order Counter</h2>
+  <p class="counter-date">📅 {{ currentDate | date:'fullDate' }}</p>
+  <p class="cafe-subtitle">Welcome! Enter customer details and take delicious beverage orders.</p>
+</div>
+
+<!-- Customer Name Entry Section -->
+<div class="card-section name-entry">
+  <label for="customerName" class="section-label">Customer Name</label>
+  <div class="input-action-group">
+    <input
+      id="customerName"
+      type="text"
+      [ngModel]="customerName"
+      (ngModelChange)="onNameChange($event)"
+      placeholder="Enter your name"
+      (keyup.enter)="onAskOrder()"
+    />
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="onAskOrder()"
+      [disabled]="!customerName || !customerName.trim()"
+    >
+      Ask Order
+    </button>
+  </div>
+</div>

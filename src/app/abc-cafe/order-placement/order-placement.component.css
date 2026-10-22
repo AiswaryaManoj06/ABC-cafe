@@ -1,0 +1,57 @@
+.order-placement-actions {
+  margin-bottom: 1.5rem;
+}
+
+button {
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.85rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-order {
+  background: #27ae60;
+  color: #ffffff;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+}
+
+.btn-order:hover:not(:disabled) {
+  background: #219653;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.35);
+}
+
+.btn-order:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  background: #d4cbc2;
+  color: #8c8279;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

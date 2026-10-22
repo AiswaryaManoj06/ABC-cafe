@@ -1,0 +1,135 @@
+/* Header */
+.cafe-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.cafe-badge {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  background: #fbf5ef;
+  color: #a05a2c;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+.cafe-heading {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #2b1f17;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+
+.counter-date {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #a05a2c;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.cafe-subtitle {
+  color: #7a6e65;
+  font-size: 0.95rem;
+}
+
+/* Card Section */
+.card-section {
+  background: #fdfcfb;
+  border: 1px solid #efe8e1;
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.section-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #423228;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Name Entry */
+.input-action-group {
+  display: flex;
+  gap: 0.75rem;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1.5px solid #dfd6cd;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+  color: #2b1f17;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus {
+  border-color: #a05a2c;
+  box-shadow: 0 0 0 3px rgba(160, 90, 44, 0.15);
+}
+
+input[type="text"]::placeholder {
+  color: #a89e96;
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: #a05a2c;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(160, 90, 44, 0.25);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #8b4a20;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(160, 90, 44, 0.35);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  background: #d4cbc2;
+  color: #8c8279;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+@media (max-width: 520px) {
+  .input-action-group {
+    flex-direction: column;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}

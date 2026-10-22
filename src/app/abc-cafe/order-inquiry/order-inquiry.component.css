@@ -1,0 +1,38 @@
+.card-section {
+  background: #fdfcfb;
+  border: 1px solid #efe8e1;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.inquiry-prompt {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #3b2c22;
+  margin: 0;
+}
+
+.highlight-name {
+  color: #a05a2c;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(160, 90, 44, 0.3);
+  text-underline-offset: 3px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

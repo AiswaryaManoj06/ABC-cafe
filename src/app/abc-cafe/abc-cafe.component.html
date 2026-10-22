@@ -1,89 +1,38 @@
 <div class="cafe-container">
-  <!-- Header Banner -->
-  <div class="cafe-header">
-    <div class="cafe-badge">☕ Freshly Brewed Daily</div>
-    <h2 class="cafe-heading">ABC Cafe Order Counter</h2>
-    <p class="cafe-subtitle">Welcome! Enter customer details and take delicious beverage orders.</p>
-  </div>
+  <!-- Counter Component: Heading, DatePipe, Customer Name Input & Ask Order Button -->
+  <app-counter
+    [(customerName)]="customerName"
+    (askOrder)="askOrder($event)"
+  />
 
-  <!-- Name Entry -->
-  <div class="card-section name-entry">
-    <label for="customerName" class="section-label">Customer Name</label>
-    <div class="input-action-group">
-      <input
-        id="customerName"
-        type="text"
-        [(ngModel)]="customerName"
-        placeholder="Enter your name"
-        (keyup.enter)="askOrder()"
-      />
-      <button
-        type="button"
-        class="btn-primary"
-        (click)="askOrder()"
-        [disabled]="!customerName.trim()"
-      >
-        Ask Order
-      </button>
-    </div>
-  </div>
+  <!-- Order Inquiry Process: Shown when inquiry is active -->
+  <ng-container *ngIf="orderInquiryActive">
+    <!-- Order Inquiry Component: Prompts customer and dynamically replaces [customerName] -->
+    <app-order-inquiry
+      [customerName]="customerName"
+    />
 
-  <!-- Order Inquiry -->
-  <div *ngIf="orderInquiryActive" class="card-section order-inquiry animate-fade-in">
-    <p class="inquiry-prompt">
-      What would <span class="highlight-name">{{ customerName }}</span> like to have?
-    </p>
+    <!-- Beverage Selection Component: Conditionally displayed via *ngIf, uses *ngFor for beverages -->
+    <app-beverage-selection
+      *ngIf="orderInquiryActive"
+      [beverages]="beverages"
+      [(selectedBeverage)]="selectedBeverage"
+      (beverageSelected)="onBeverageSelect($event)"
+    />
 
-    <div class="beverage-grid">
-      <label
-        *ngFor="let bev of beverages"
-        class="beverage-card"
-        [class.selected]="selectedBeverage === bev"
-      >
-        <input
-          type="radio"
-          name="beverage"
-          [value]="bev"
-          [(ngModel)]="selectedBeverage"
-        />
-        <span class="bev-icon">
-          <ng-container [ngSwitch]="bev">
-            <span *ngSwitchCase="'Coffee'">☕</span>
-            <span *ngSwitchCase="'Tea'">🍵</span>
-            <span *ngSwitchCase="'Juice'">🧃</span>
-            <span *ngSwitchCase="'Soda'">🥤</span>
-            <span *ngSwitchDefault>🍹</span>
-          </ng-container>
-        </span>
-        <span class="bev-name">{{ bev }}</span>
-      </label>
-    </div>
+    <!-- Order Placement Component: "Place Order" button that adds selected beverage to orders -->
+    <app-order-placement
+      *ngIf="orderInquiryActive"
+      [customerName]="customerName"
+      [selectedBeverage]="selectedBeverage"
+      [customerOrders]="customerOrders"
+      (orderPlaced)="onOrderPlaced($event)"
+    />
+  </ng-container>
 
-    <div class="inquiry-actions">
-      <button
-        type="button"
-        class="btn-order"
-        (click)="placeOrder()"
-        [disabled]="!selectedBeverage"
-      >
-        Place Order
-      </button>
-    </div>
-  </div>
-
-  <!-- Order Summary -->
-  <div *ngIf="customerOrders.length > 0" class="card-section order-summary animate-fade-in">
-    <div class="summary-header">
-      <h3 class="summary-title">📋 Order Summary</h3>
-      <span class="orders-count">{{ customerOrders.length }} {{ customerOrders.length === 1 ? 'order' : 'orders' }}</span>
-    </div>
-    <ul class="orders-list">
-      <li *ngFor="let order of customerOrders; let i = index" class="order-item">
-        <span class="order-badge">#{{ i + 1 }}</span>
-        <div class="order-info">
-          {{ i + 1 }}. <span class="order-customer">{{ order.customerName }}</span> ordered <span class="order-drink">{{ order.beverage }}</span>
-        </div>
-      </li>
-    </ul>
-  </div>
+  <!-- Order Summary Component: Displayed only if there are orders, uses UpperCasePipe for formatting -->
+  <app-order-summary
+    *ngIf="customerOrders.length > 0"
+    [customerOrders]="customerOrders"
+  />
 </div>
