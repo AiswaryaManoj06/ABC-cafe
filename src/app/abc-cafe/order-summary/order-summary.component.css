@@ -61,6 +61,7 @@
 }
 
 .order-info {
+  flex: 1;
   font-size: 0.92rem;
   color: #4b3d33;
 }
@@ -76,6 +77,42 @@
   letter-spacing: 0.03em;
 }
 
+/* Consumed Button */
+.btn-consumed {
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.45rem 0.9rem;
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.btn-consumed:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.35);
+}
+
+.btn-consumed:active {
+  transform: translateY(0);
+}
+
+.badge-reviewed {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #059669;
+  background: #d1fae5;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -89,4 +126,14 @@
 
 .animate-fade-in {
   animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (max-width: 520px) {
+  .order-item {
+    flex-wrap: wrap;
+  }
+  .btn-consumed {
+    width: 100%;
+    margin-top: 0.25rem;
+  }
 }

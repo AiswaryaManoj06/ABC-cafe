@@ -1,0 +1,39 @@
+<div *ngIf="isVisible" class="card-section review-card animate-fade-in">
+  <div class="review-header">
+    <div class="review-title-group">
+      <span class="review-badge">⭐ Customer Feedback</span>
+      <h3 class="review-title">How was your beverage?</h3>
+      <p *ngIf="order" class="review-order-info">Reviewing: <strong>{{ order }}</strong></p>
+    </div>
+    <button type="button" class="btn-close" (click)="dismiss()" title="Close">&times;</button>
+  </div>
+
+  <div class="review-buttons-group">
+    <button
+      type="button"
+      class="btn-rating btn-good"
+      (click)="submitReview('Good')"
+    >
+      <span class="rating-icon">😊</span>
+      <span class="rating-label">Good</span>
+    </button>
+
+    <button
+      type="button"
+      class="btn-rating btn-average"
+      (click)="submitReview('Average')"
+    >
+      <span class="rating-icon">😐</span>
+      <span class="rating-label">Average</span>
+    </button>
+
+    <button
+      type="button"
+      class="btn-rating btn-poor"
+      (click)="submitReview('Poor')"
+    >
+      <span class="rating-icon">😞</span>
+      <span class="rating-label">Poor</span>
+    </button>
+  </div>
+</div>

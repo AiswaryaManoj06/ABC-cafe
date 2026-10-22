@@ -7,6 +7,8 @@ import { OrderInquiryComponent } from './order-inquiry/order-inquiry.component';
 import { BeverageSelectionComponent } from './beverage-selection/beverage-selection.component';
 import { OrderPlacementComponent } from './order-placement/order-placement.component';
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
+import { CustomerReviewComponent } from './customer-review/customer-review.component';
+import { PerformanceComponent } from './performance/performance.component';
 
 export type { CustomerOrder } from '../models/customer-order.model';
 
@@ -20,7 +22,9 @@ export type { CustomerOrder } from '../models/customer-order.model';
     OrderInquiryComponent,
     BeverageSelectionComponent,
     OrderPlacementComponent,
-    OrderSummaryComponent
+    OrderSummaryComponent,
+    CustomerReviewComponent,
+    PerformanceComponent
   ],
   templateUrl: './abc-cafe.component.html',
   styleUrls: ['./abc-cafe.component.css']
@@ -41,8 +45,31 @@ export class AbcCafeComponent {
   /** Accumulated customer orders */
   customerOrders: CustomerOrder[] = [];
 
+  /** Flag to toggle visibility of PerformanceComponent */
+  showPerformance: boolean = false;
+
+  /** Flag to toggle visibility of CustomerReviewComponent */
+  showCustomerReview: boolean = false;
+
+  /** Reference to order currently being reviewed */
+  activeReviewOrder: CustomerOrder | null = null;
+
+  /** Formatted description of order currently being reviewed */
+  activeOrderDescription: string = '';
+
   /**
-   * Activates the order inquiry process after a customer name is entered.
+   * Returns formatted summary of the last placed order.
+   */
+  get lastOrderDescription(): string {
+    if (this.customerOrders.length > 0) {
+      const last = this.customerOrders[this.customerOrders.length - 1];
+      return `${last.customerName || last.name} (${last.beverage})`;
+    }
+    return '';
+  }
+
+  /**
+   * Activates the order inquiry process after customer name is entered.
    */
   askOrder(name?: string): void {
     if (name) {
@@ -54,7 +81,7 @@ export class AbcCafeComponent {
   }
 
   /**
-   * Handles beverage selection from BeverageSelectionComponent
+   * Handles beverage selection from BeverageSelectionComponent.
    */
   onBeverageSelect(beverage: string): void {
     this.selectedBeverage = beverage;
@@ -64,14 +91,50 @@ export class AbcCafeComponent {
    * Resets form and inquiry state after an order has been placed.
    */
   onOrderPlaced(order: CustomerOrder): void {
-    // Reset state for next customer
     this.customerName = '';
     this.selectedBeverage = '';
     this.orderInquiryActive = false;
   }
 
   /**
-   * Fallback method to place order directly if needed
+   * Handles clicking the "Consumed" button on an order in the order list.
+   * Displays CustomerReviewComponent for the consumed order.
+   */
+  onOrderConsumed(event: { order: CustomerOrder; index: number }): void {
+    this.activeReviewOrder = event.order;
+    this.activeOrderDescription = `${event.order.customerName || event.order.name} - ${event.order.beverage}`;
+    this.showCustomerReview = true;
+  }
+
+  /**
+   * Handles review submission: hides CustomerReviewComponent and marks the order
+   * as consumed so its "Consumed" button is no longer visible.
+   */
+  onReviewSubmitted(event: { order: string; feedback: string }): void {
+    if (this.activeReviewOrder) {
+      this.activeReviewOrder.consumed = true;
+      this.activeReviewOrder.feedback = event.feedback;
+    } else if (this.customerOrders.length > 0) {
+      // Fallback: apply to last order
+      const last = this.customerOrders[this.customerOrders.length - 1];
+      last.consumed = true;
+      last.feedback = event.feedback;
+    }
+
+    this.showCustomerReview = false;
+    this.activeReviewOrder = null;
+    this.activeOrderDescription = '';
+  }
+
+  /**
+   * Toggles visibility of the PerformanceComponent.
+   */
+  togglePerformance(): void {
+    this.showPerformance = !this.showPerformance;
+  }
+
+  /**
+   * Fallback method to place order directly if needed.
    */
   placeOrder(): void {
     if (this.customerName.trim() && this.selectedBeverage) {

@@ -1,4 +1,21 @@
 <div class="cafe-container">
+  <!-- Top Bar: Button to toggle Performance Component -->
+  <div class="cafe-toolbar">
+    <button
+      type="button"
+      class="btn-perf-toggle"
+      (click)="togglePerformance()"
+    >
+      <span>{{ showPerformance ? '✕ Hide Performance' : '📊 View Cafe Performance' }}</span>
+    </button>
+  </div>
+
+  <!-- Performance Component (Shown on clicking the button) -->
+  <app-performance
+    *ngIf="showPerformance"
+    (close)="showPerformance = false"
+  />
+
   <!-- Counter Component: Heading, DatePipe, Customer Name Input & Ask Order Button -->
   <app-counter
     [(customerName)]="customerName"
@@ -30,9 +47,18 @@
     />
   </ng-container>
 
-  <!-- Order Summary Component: Displayed only if there are orders, uses UpperCasePipe for formatting -->
+  <!-- Customer Review Component: Displayed when Consumed button is clicked -->
+  <app-customer-review
+    *ngIf="showCustomerReview"
+    [order]="activeOrderDescription || lastOrderDescription"
+    [(isVisible)]="showCustomerReview"
+    (reviewSubmitted)="onReviewSubmitted($event)"
+  />
+
+  <!-- Order Summary Component: Displays orders with Consumed buttons -->
   <app-order-summary
     *ngIf="customerOrders.length > 0"
     [customerOrders]="customerOrders"
+    (orderConsumed)="onOrderConsumed($event)"
   />
 </div>

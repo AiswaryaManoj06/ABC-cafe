@@ -1,0 +1,62 @@
+<div class="card-section performance-card animate-fade-in">
+  <!-- Performance Header -->
+  <div class="perf-header">
+    <div class="perf-title-group">
+      <span class="perf-badge">📊 Analytics</span>
+      <h3 class="perf-title">Cafe Performance Overview</h3>
+    </div>
+    <button type="button" class="btn-close" (click)="onClose()" title="Close Performance">&times;</button>
+  </div>
+
+  <!-- Overall Performance Message Section -->
+  <div class="perf-message-box">
+    <span class="perf-msg-label">Overall Performance Status:</span>
+    <p class="perf-message-text">{{ performanceMessage }}</p>
+  </div>
+
+  <!-- Button to Show/Toggle Review Status Counts -->
+  <div class="perf-actions">
+    <button
+      type="button"
+      class="btn-toggle-stats"
+      (click)="toggleReviewCounts()"
+    >
+      {{ showCounts ? 'Hide Review Counts' : 'Show Review Counts' }}
+    </button>
+  </div>
+
+  <!-- Review Status Counts (Shown on button click) -->
+  <div *ngIf="showCounts" class="stats-grid animate-fade-in">
+    <div class="stat-card stat-good">
+      <div class="stat-icon">😊</div>
+      <div class="stat-details">
+        <span class="stat-name">Good</span>
+        <span class="stat-value">{{ reviewStats.good }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card stat-average">
+      <div class="stat-icon">😐</div>
+      <div class="stat-details">
+        <span class="stat-name">Average</span>
+        <span class="stat-value">{{ reviewStats.average }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card stat-poor">
+      <div class="stat-icon">😞</div>
+      <div class="stat-details">
+        <span class="stat-name">Poor</span>
+        <span class="stat-value">{{ reviewStats.poor }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card stat-total">
+      <div class="stat-icon">📋</div>
+      <div class="stat-details">
+        <span class="stat-name">Total Reviews</span>
+        <span class="stat-value">{{ reviewStats.total }}</span>
+      </div>
+    </div>
+  </div>
+</div>
