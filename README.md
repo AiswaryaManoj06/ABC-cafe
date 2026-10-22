@@ -138,11 +138,20 @@ export const routes: Routes = [
   { path: 'order-list', component: OrderListComponent },
   { path: 'orders', component: OrderListComponent },
   { path: 'performance', component: PerformanceComponent },
-  { path: '**', redirectTo: 'home' }
+  { path: 'cafe', component: AbcCafeComponent },
+  // Wildcard Route (**) for handling unknown URLs / 404
+  { path: '**', component: PageNotFoundComponent }
 ];
 ```
 
-### 2. Menu Stack Bar (`MenuStackBarComponent`)
+### 2. Wildcard Route & 404 Component (`PageNotFoundComponent`)
+- **Selector:** `app-page-not-found`
+- **Catch-All Handler:** Automatically matches any undefined route or mistyped URL entered by the user.
+- **Visual Feedback:** Renders a 404 status badge, descriptive error message, and direct action buttons:
+  - **"Return to Cafe Counter"** (`routerLink="/home"`)
+  - **"View Order List"** (`routerLink="/order-list"`)
+
+### 3. Menu Stack Bar (`MenuStackBarComponent`)
 - Embedded at the top of `app.component.html`.
 - Uses Angular's **`RouterLink`** directive for instant client-side transitions.
 - Employs **`routerLinkActive="active"`** to highlight the current navigation item with custom styles (`.active`).

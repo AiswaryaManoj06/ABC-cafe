@@ -1,0 +1,131 @@
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.not-found-card {
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+}
+
+.not-found-badge {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  background: #fbf5ef;
+  color: #a05a2c;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.not-found-icon {
+  font-size: 3.5rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.not-found-code {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #a05a2c;
+  line-height: 1;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.04em;
+}
+
+.not-found-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #2b1f17;
+  margin: 0 0 0.75rem;
+}
+
+.not-found-message {
+  font-size: 0.95rem;
+  color: #7a6e65;
+  line-height: 1.5;
+  margin: 0 0 2rem;
+}
+
+.not-found-message strong {
+  color: #2b1f17;
+}
+
+.not-found-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  background: #a05a2c;
+  color: #ffffff;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(160, 90, 44, 0.28);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-home:hover {
+  background: #8b4a20;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(160, 90, 44, 0.38);
+}
+
+.btn-orders {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  background: #fdfcfb;
+  color: #423228;
+  border: 1.5px solid #dfd6cd;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-orders:hover {
+  background: #fbf5ef;
+  border-color: #a05a2c;
+  color: #a05a2c;
+  transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (min-width: 480px) {
+  .not-found-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
